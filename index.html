@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenjiku Bytes Studio | Game Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5e35b1;
+            --secondary: #ffab00;
+            --dark: #121212;
+            --light: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: radial-gradient(circle at 75% 50%, rgba(94, 53, 177, 0.5) 0%, rgba(18, 18, 18, 1) 60%);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(255, 171, 0, 0.25);
+        }
+        
+        .byte-loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: var(--secondary);
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .pixel-corner {
+            clip-path: polygon(
+                0 0, calc(100% - 15px) 0, 100% 15px, 
+                100% 100%, 15px 100%, 0 calc(100% - 15px)
+            );
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid var(--secondary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--secondary); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-dark z-50 flex items-center justify-center">
+        <div class="byte-loader"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 bg-dark bg-opacity-90 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <div class="h-10 w-10 bg-secondary rounded flex items-center justify-center mr-2">
+                            <span class="text-dark font-bold text-xl">TB</span>
+                        </div>
+                        <span class="text-white font-orbitron font-bold text-xl">TENJIKU BYTES</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-secondary transition">Home</a>
+                    <a href="#games" class="text-white hover:text-secondary transition">Games</a>
+                    <a href="#services" class="text-white hover:text-secondary transition">Services</a>
+                    <a href="#about" class="text-white hover:text-secondary transition">About</a>
+                    <a href="#careers" class="text-white hover:text-secondary transition">Careers</a>
+                    <a href="#contact" class="px-4 py-2 bg-secondary text-dark font-bold rounded hover:bg-white transition">Contact</a>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white hover:text-secondary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-dark border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 text-white hover:text-secondary">Home</a>
+                <a href="#games" class="block px-3 py-2 text-white hover:text-secondary">Games</a>
+                <a href="#services" class="block px-3 py-2 text-white hover:text-secondary">Services</a>
+                <a href="#about" class="block px-3 py-2 text-white hover:text-secondary">About</a>
+                <a href="#careers" class="block px-3 py-2 text-white hover:text-secondary">Careers</a>
+                <a href="#contact" class="block px-3 py-2 bg-secondary text-dark text-center font-bold rounded">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 hero-gradient">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:flex items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+                        <span class="text-secondary">CRAFTING</span> NEXT-LEVEL
+                        <span class="typewriter">GAME EXPERIENCES</span>
+                    </h1>
+                    <p class="text-lg text-gray-300 mb-8 max-w-lg">
+                        At Tenjiku Bytes Studio, we blend cutting-edge technology with creative storytelling to deliver unforgettable gaming adventures.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#games" class="px-6 py-3 bg-secondary text-dark font-bold rounded hover:bg-white transition">Our Games</a>
+                        <a href="#contact" class="px-6 py-3 border border-secondary text-white font-bold rounded hover:bg-secondary hover:text-dark transition">Contact Us</a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 bg-secondary rounded-full absolute -right-4 -bottom-4 z-0 opacity-20 animate-pulse"></div>
+                        <div class="w-64 h-64 md:w-80 md:h-80 bg-primary rounded-full absolute -left-4 -top-4 z-0 opacity-20"></div>
+                        <img src="https://placeholder.pics/svg/400x400/DEDEDE/555555/Game%20Character" alt="Tenjiku Character" class="relative z-10 w-64 h-64 md:w-80 md:h-80 object-cover rounded-lg pixel-corner">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Games -->
+    <section id="games" class="py-20 px-4 sm:px-6 lg:px-8 bg-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">OUR <span class="text-secondary">GAMES</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore our portfolio of immersive games across multiple platforms</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Game 1 -->
+                <div class="game-card bg-gray-900 rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+                    <div class="relative">
+                        <img src="https://placeholder.pics/svg/500x300/DEDEDE/555555/Space%20Adventure" alt="Celestial Drift" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
+                        <div class="absolute top-2 right-2 bg-primary px-2 py-1 rounded text-xs font-bold">NEW</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Celestial Drift</h3>
+                        <p class="text-gray-400 text-sm mb-4">A cosmic racing adventure where time and space bend to your will.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs bg-gray-800 text-white px-2 py-1 rounded">PC, PS5, XBOX</span>
+                            <a href="#" class="text-secondary text-sm font-bold hover:text-white transition">Learn More →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game 2 -->
+                <div class="game-card bg-gray-900 rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+                    <div class="relative">
+                        <img src="https://placeholder.pics/svg/500x300/DEDEDE/555555/Samurai%20Legends" alt="Shadow Ronin" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Shadow Ronin</h3>
+                        <p class="text-gray-400 text-sm mb-4">An action-packed stealth game set in feudal Japan with supernatural elements.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs bg-gray-800 text-white px-2 py-1 rounded">PC, Switch</span>
+                            <a href="#" class="text-secondary text-sm font-bold hover:text-white transition">Learn More →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game 3 -->
+                <div class="game-card bg-gray-900 rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+                    <div class="relative">
+                        <img src="https://placeholder.pics/svg/500x300/DEDEDE/555555/Puzzle%20World" alt="Neon Grid" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
+                        <div class="absolute top-2 right-2 bg-secondary px-2 py-1 rounded text-xs font-bold text-dark">MOBILE</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Neon Grid</h3>
+                        <p class="text-gray-400 text-sm mb-4">A mind-bending puzzle game that challenges your perception of reality.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs bg-gray-800 text-white px-2 py-1 rounded">iOS, Android</span>
+                            <a href="#" class="text-secondary text-sm font-bold hover:text-white transition">Learn More →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block px-6 py-3 border border-secondary text-secondary font-bold rounded hover:bg-secondary hover:text-dark transition">View All Games</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">OUR <span class="text-secondary">SERVICES</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Beyond game development, we offer specialized services to bring your vision to life</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-gray-800 rounded-lg p-8 transition duration-300 hover:shadow-lg hover:shadow-secondary/20">
+                    <div class="text-secondary mb-6">
+                        <i class="fas fa-gamepad fa-3x"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Full Game Development</h3>
+                    <p class="text-gray-400">End-to-end development services from concept to launch, covering all aspects of game creation including programming, art, design, and sound.</p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-gray-800 rounded-lg p-8 transition duration-300 hover:shadow-lg hover:shadow-secondary/20">
+                    <div class="text-secondary mb-6">
+                        <i class="fas fa-robot fa-3x"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">AI & Machine Learning</h3>
+                    <p class="text-gray-400">Advanced AI systems for NPC behavior, procedural content generation, and adaptive gameplay experiences that learn from player actions.</p>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="bg-gray-800 rounded-lg p-8 transition duration-300 hover:shadow-lg hover:shadow-secondary/20">
+                    <div class="text-secondary mb-6">
+                        <i class="fas fa-vr-cardboard fa-3x"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">VR/AR Development</h3>
+                    <p class="text-gray-400">Immersive virtual and augmented reality experiences that push the boundaries of interactive entertainment in both gaming and enterprise applications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 bg-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:flex items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 md:pr-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">ABOUT <span class="text-secondary">TENJIKU BYTES</span></h2>
+                    <p class="text-gray-400 mb-6">
+                        Founded in 2018, Tenjiku Bytes Studio is an independent game development powerhouse with teams across Tokyo, Singapore, and Los Angeles. 
+                        Our name "Tenjiku" comes from ancient Japanese references to distant, exotic lands - representing our boundless creativity and global perspective.
+                    </p>
+                    <p class="text-gray-400 mb-6">
+                        We specialize in crafting innovative gaming experiences that blend Eastern and Western design philosophies. Our team of 50+ developers, artists, and storytellers are united by a passion for pushing technological and creative boundaries.
+                    </p>
+                    <div class="flex items-center space-x-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-secondary mb-1">7+</div>
+                            <div class="text-sm text-gray-400">Games Released</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-secondary mb-1">15M+</div>
+                            <div class="text-sm text-gray-400">Players Worldwide</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-secondary mb-1">8</div>
+                            <div class="text-sm text-gray-400">Industry Awards</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                    <div class="bg-gray-900 rounded-lg p-2 inline-block">
+                        <div class="grid grid-cols-2 gap-2">
+                            <img src="https://placeholder.pics/svg/200x200/DEDEDE/555555/Team%201" alt="Team member" class="rounded">
+                            <img src="https://placeholder.pics/svg/200x200/DEDEDE/555555/Team%202" alt="Team member" class="rounded">
+                            <img src="https://placeholder.pics/svg/200x200/DEDEDE/555555/Team%203" alt="Team member" class="rounded">
+                            <img src="https://placeholder.pics/svg/200x200/DEDEDE/555555/Team%204" alt="Team member" class="rounded">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-white font-bold mb-2">The Tenjiku Team</h3>
+                            <p class="text-gray-400 text-sm">A multicultural team of passionate developers and creatives united by a love for gaming innovation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers -->
+    <section id="careers" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:flex items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 md:order-1 md:pl-12">
+                    <img src="https://placeholder.pics/svg/500x300/DEDEDE/555555/Join%20Our%20Team" alt="Careers" class="rounded-lg w-full">
+                </div>
+                
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">JOIN <span class="text-secondary">OUR TEAM</span></h2>
+                    <p class="text-gray-400 mb-6">
+                        At Tenjiku Bytes Studio, we're always looking for passionate individuals who want to create the next generation of gaming experiences. 
+                        We offer competitive salaries, flexible work arrangements, and the opportunity to work on exciting projects with industry veterans.
+                    </p>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="border-l-4 border-secondary pl-4 py-2">
+                            <h3 class="text-white font-bold">Game Programmer (Unreal Engine)</h3>
+                            <p class="text-gray-400 text-sm">Tokyo or Remote</p>
+                        </div>
+                        <div class="border-l-4 border-secondary pl-4 py-2">
+                            <h3 class="text-white font-bold">3D Character Artist</h3>
+                            <p class="text-gray-400 text-sm">Singapore or Remote</p>
+                        </div>
+                        <div class="border-l-4 border-secondary pl-4 py-2">
+                            <h3 class="text-white font-bold">Technical Game Designer</h3>
+                            <p class="text-gray-400 text-sm">Los Angeles or Remote</p>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="inline-block px-6 py-3 bg-secondary text-dark font-bold rounded hover:bg-white transition">View All Openings</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">WHAT <span class="text-secondary">PEOPLE SAY</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Hear from our partners and players around the world</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-900 rounded-lg p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="text-secondary mr-4">
+                            <i class="fas fa-quote-left fa-2x opacity-50"></i>
+                        </div>
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "Working with Tenjiku Bytes exceeded our expectations. Their technical expertise and creative vision brought our concept to life in ways we hadn't imagined."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placeholder.pics/svg/50x50/DEDEDE/555555/Client%201" alt="Client" class="rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">Emily Chen</h4>
+                            <p class="text-gray-400 text-sm">Director, Nova Interactive</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-900 rounded-lg p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="text-secondary mr-4">
+                            <i class="fas fa-quote-left fa-2x opacity-50"></i>
+                        </div>
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "Shadow Ronin is a masterpiece of atmospheric storytelling. The attention to historical detail combined with supernatural elements creates a truly unique experience."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placeholder.pics/svg/50x50/DEDEDE/555555/Client%202" alt="Client" class="rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">Marcus Wright</h4>
+                            <p class="text-gray-400 text-sm">Editor, GameAxis</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-900 rounded-lg p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="text-secondary mr-4">
+                            <i class="fas fa-quote-left fa-2x opacity-50"></i>
+                        </div>
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "Their VR demo at the conference was mind-blowing. The fluid locomotion system solved nausea issues that have plagued VR for years. Industry-changing work."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placeholder.pics/svg/50x50/DEDEDE/555555/Client%203" alt="Client" class="rounded-full mr-4">
+                        <div>
+                            <h4 class="text-white font-bold">David Park</h4>
+                            <p class="text-gray-400 text-sm">CTO, VirtuTech</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">GET IN <span class="text-secondary">TOUCH</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Have a project in mind or want to learn more about our services? Reach out to us.</p>
+            </div>
+            
+            <div class="md:flex">
+                <div class="md:w-1/2 mb-12 md:mb-0 md:pr-12">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-white mb-2">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-secondary text-white">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-white mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-secondary text-white">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-white mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-secondary text-white">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-white mb-2">Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-secondary text-white"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full px-6 py-3 bg-secondary text-dark font-bold rounded hover:bg-white transition">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="md:w-1/2 md:pl-12">
+                    <div class="bg-gray-800 rounded-lg p-8 h-full">
+                        <h3 class="text-xl font-bold text-white mb-6">OUR <span class="text-secondary">LOCATIONS</span></h3>
+                        
+                        <div class="space-y-8">
+                            <!-- Tokyo Office -->
+                            <div class="flex">
+                                <div class="text-secondary mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold mb-2">Tokyo Headquarters</h4>
+                                    <p class="text-gray-400">3-5-1 Marunouchi, Chiyoda-ku<br>
+                                    Tokyo 100-0005, Japan<br>
+                                    <a href="tel:+81312345678" class="hover:text-white">+81 3 1234 5678</a></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Singapore Office -->
+                            <div class="flex">
+                                <div class="text-secondary mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold mb-2">Singapore Studio</h4>
+                                    <p class="text-gray-400">1 Fusionopolis Way, #20-10<br>
+                                    Singapore 138632<br>
+                                    <a href="tel:+6561234567" class="hover:text-white">+65 6123 4567</a></p>
+                                </div>
+                            </div>
+                            
+                            <!-- LA Office -->
+                            <div class="flex">
+                                <div class="text-secondary mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold mb-2">Los Angeles Studio</h4>
+                                    <p class="text-gray-400">340 Main Street, Suite 600<br>
+                                    Los Angeles, CA 90291<br>
+                                    <a href="tel:+12135551234" class="hover:text-white">+1 213 555 1234</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <h4 class="text-white font-bold mb-4">FOLLOW US</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-secondary hover:text-dark transition">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-secondary hover:text-dark transition">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-secondary hover:text-dark transition">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-secondary hover:text-dark transition">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-secondary hover:text-dark transition">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-dark border-t border-gray-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">STAY UPDATED</h2>
+            <p class="text-gray-400 mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for game announcements, behind-the-scenes content, and special offers.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-secondary text-white">
+                <button type="submit" class="px-6 py-3 bg-secondary text-dark font-bold rounded hover:bg-white transition">Subscribe</button>
+            </form>
+            
+            <p class="text-gray-500 text-xs mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:flex md:justify-between md:items-center">
+                <div class="mb-8 md:mb-0">
+                    <a href="#" class="flex items-center">
+                        <div class="h-10 w-10 bg-secondary rounded flex items-center justify-center mr-2">
+                            <span class="text-dark font-bold text-xl">TB</span>
+                        </div>
+                        <span class="text-white font-orbitron font-bold text-xl">TENJIKU BYTES</span>
+                    </a>
+                    <p class="text-gray-500 text-sm mt-2">© 2023 Tenjiku Bytes Studio. All rights reserved.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-white font-bold mb-4">COMPANY</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#about" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                            <li><a href="#careers" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">News</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-white font-bold mb-4">GAMES</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">All Games</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Upcoming</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Console</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-white font-bold mb-4">SUPPORT</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Press Kit</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-900 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">"Tenjiku" is a registered trademark of Tenjiku Bytes Studio K.K.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            preloader.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const scrollReveal = function() {
+            const elements = document.querySelectorAll('.game-card, .service-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Initialize elements for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.game-card, .service-card');
+            
+            animatedElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            window.addEventListener('scroll', scrollReveal);
+            scrollReveal(); // Run once on load
+        });
+    </script>
+</body>
+</html>
